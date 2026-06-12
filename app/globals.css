@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-opensans:   'Open Sans',  sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-opensans);
+  color: #1F2937;
+  background: #fff;
+}
+
+/* ─────────────────────────────────────
+   TICKER (top amber bar + clients bar)
+───────────────────────────────────── */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker { animation: ticker 28s linear infinite; }
+
+/* ─────────────────────────────────────
+   TICKER REVERSE (second marquee row)
+───────────────────────────────────── */
+@keyframes ticker-r {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-ticker-r { animation: ticker-r 32s linear infinite; }
+
+/* ─────────────────────────────────────
+   SCROLL REVEAL
+   Added by Reveal.tsx via JS after hydration
+───────────────────────────────────── */
+.rv-bottom {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rv-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rv-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rv-in {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ─────────────────────────────────────
+   CARD HOVER LIFT
+───────────────────────────────────── */
+.card-lift {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.card-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.13);
+}
+
+/* ─────────────────────────────────────
+   IMAGE ZOOM ON HOVER
+───────────────────────────────────── */
+.img-zoom img {
+  transition: transform 0.4s ease;
+}
+.img-zoom:hover img {
+  transform: scale(1.06);
+}
+
+/* ─────────────────────────────────────
+   OVERLAY TRANSITIONS
+───────────────────────────────────── */
+.overlay-hover {
+  transition: background 0.3s ease;
+}
+
+/* ─────────────────────────────────────
+   GALLERY ITEM HOVER
+───────────────────────────────────── */
+.gallery-item .gallery-overlay {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+.gallery-item img {
+  transition: transform 0.5s ease;
+}
+.gallery-item:hover img {
+  transform: scale(1.07);
+}
+
+/* ─────────────────────────────────────
+   FADE-UP UTILITY (for legacy use)
+───────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fadeUp 0.55s ease both; }
+
+/* ─────────────────────────────────────
+   PULSE GLOW (for hero accent elements)
+───────────────────────────────────── */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(247,168,0,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(247,168,0,0); }
+}
+.pulse-amber { animation: pulseGlow 2.5s ease infinite; }
+
+/* ─────────────────────────────────────
+   CUSTOM SCROLLBAR
+───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #0057A8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #003D7A; }
