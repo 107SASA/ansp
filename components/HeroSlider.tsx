@@ -47,7 +47,12 @@ const SLIDES = [
   },
 ]
 
-export default function HeroSlider() {
+export interface Slide {
+  img: string; badge: string; pre: string; heading: string; body: string; pill: string;
+}
+
+export default function HeroSlider({ slides }: { slides?: Slide[] }) {
+  const ACTIVE = (slides && slides.length > 0) ? slides : SLIDES
   const [idx, setIdx]         = useState(0)
   const [textOut, setTextOut] = useState(false)
 
@@ -57,22 +62,23 @@ export default function HeroSlider() {
     setTimeout(() => { setIdx(to); setTextOut(false) }, 380)
   }, [idx])
 
+  const count = ACTIVE.length
   const next = useCallback(() => {
     setTextOut(true)
-    setTimeout(() => { setIdx(p => (p + 1) % SLIDES.length); setTextOut(false) }, 380)
-  }, [])
+    setTimeout(() => { setIdx(p => (p + 1) % count); setTextOut(false) }, 380)
+  }, [count])
 
   useEffect(() => {
     const t = setInterval(next, 5500)
     return () => clearInterval(t)
   }, [next])
 
-  const s = SLIDES[idx]
+  const s = ACTIVE[idx]
 
   return (
     <section className="relative bg-navy min-h-[94vh] flex items-center overflow-hidden">
 
-      {SLIDES.map((sl, i) => (
+      {ACTIVE.map((sl, i) => (
         <div key={i} className={`absolute inset-0 transition-opacity duration-[900ms] ease-in-out ${i === idx ? 'opacity-100' : 'opacity-0'}`}>
           <Image src={sl.img} alt="" fill className="object-cover opacity-[0.17]" priority={i === 0} />
         </div>
@@ -130,7 +136,7 @@ export default function HeroSlider() {
 
       {/* Dot indicators */}
       <div className="absolute bottom-9 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
-        {SLIDES.map((_, i) => (
+        {ACTIVE.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
@@ -145,7 +151,7 @@ export default function HeroSlider() {
 
       {/* Slide counter */}
       <div className="absolute bottom-9 right-8 font-heading font-bold text-white/20 text-xs z-20 tracking-[2px]">
-        {String(idx + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
+        {String(idx + 1).padStart(2, '0')} / {String(ACTIVE.length).padStart(2, '0')}
       </div>
 
       {/* Scroll hint */}

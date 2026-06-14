@@ -6,10 +6,12 @@ import {
   IconBolt, IconDrives, IconMonitor, IconChart, IconBlueprint,
   IconConstruction, IconWrench, IconCloud,
 } from '@/components/Icons'
+import { getPage, getSection } from '@/lib/cms'
 
+export const revalidate = false
 export const metadata: Metadata = { title: 'Services' }
 
-const blocks = [
+const STATIC_BLOCKS = [
   {
     label:'In-House', title:'Panel Manufacturing',
     img:'https://anspl.co.in/assets/Panel0-D3e2k-is.jpg',
@@ -49,7 +51,18 @@ const serviceOverview = [
 
 const process = ['Enquiry & Consultation','Design & Engineering','Manufacturing','Installation','Commissioning']
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const page = await getPage('services')
+  const blocksFields = getSection(page, 'blocks')
+
+  let blocks = STATIC_BLOCKS
+  try {
+    if (blocksFields.blocks_json) {
+      const parsed = JSON.parse(blocksFields.blocks_json)
+      if (Array.isArray(parsed) && parsed.length > 0) blocks = parsed
+    }
+  } catch {}
+
   return (
     <>
       <PageHero

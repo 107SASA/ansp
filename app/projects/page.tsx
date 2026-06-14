@@ -2,9 +2,12 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { PageHero, CTABanner, SectionLabel } from '@/components/UI'
 import { IconMapPin } from '@/components/Icons'
+import { getPage, getSection } from '@/lib/cms'
+
+export const revalidate = false
 export const metadata: Metadata = { title: 'Projects' }
 
-const projects = [
+const STATIC_PROJECTS = [
   { tag:'Electrification', title:'Sand Plant Electrification', client:'L&T', loc:'East India', type:'Turnkey EPC', img:'https://anspl.co.in/assets/SiteErection2-CZuJ0WN6.jpg' },
   { tag:'Wire Drawing',    title:'8-Block Wire Drawing Automation', client:'Miki Wire', loc:'West Bengal', type:'Drives + PLC + SCADA', img:'https://anspl.co.in/assets/WireDrawingPlants1-Cx0gL6WJ.jpg' },
   { tag:'SCADA / Energy',  title:'Energy Dashboard — WBSEDCL Monitoring', client:'Industrial Plant', loc:'Kolkata', type:'Software + Integration', img:'https://anspl.co.in/assets/SoftwareSCADA0-j6zzjK_i.jpg' },
@@ -18,7 +21,18 @@ const projects = [
 
 const clients = ['L&T','Danieli Group','Tenova India','Miki Wire','Krishna Tissues','Bengal Tools','Balluff India','IPA India','ABB','Bosch Rexroth']
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const page = await getPage('projects')
+  const projectsFields = getSection(page, 'projects_list')
+
+  let projects = STATIC_PROJECTS
+  try {
+    if (projectsFields.projects_json) {
+      const parsed = JSON.parse(projectsFields.projects_json)
+      if (Array.isArray(parsed) && parsed.length > 0) projects = parsed
+    }
+  } catch {}
+
   return (
     <>
       <PageHero title="Projects Delivered Across India" subtitle="500+ automation and electrical projects across steel, paper, building automation, wire drawing and more since 1997." breadcrumb="Projects" imgSrc="https://anspl.co.in/assets/SiteErection0-2JH8nkwL.jpg" />

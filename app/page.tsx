@@ -2,12 +2,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CTABanner, SectionLabel } from '@/components/UI'
 import HeroSlider from '@/components/HeroSlider'
+import type { Slide } from '@/components/HeroSlider'
 import Reveal from '@/components/Reveal'
 import {
   IconBolt, IconDrives, IconMonitor, IconChart, IconBlueprint, IconWrench,
   IconFactory, IconChip, IconScale, IconGear, IconGraduation, IconTrophy,
   IconGlobe, IconCheck, IconConstruction, IconMapPin, IconDocument,
 } from '@/components/Icons'
+import { getPage, getSection } from '@/lib/cms'
+
+export const revalidate = false
 
 const clientLogos = [
   { src:'https://anspl.co.in/assets/image1-B4T0MSon.jpg',  alt:'Client' },
@@ -35,15 +39,6 @@ const services = [
   { icon: <IconChart className="w-6 h-6"/>,       cat:'Energy & IoT', title:'Energy Dashboard & IoT', img:'https://anspl.co.in/assets/EMS0-DQTTRtlR.png',             desc:'Energy dashboards, power utilisation reports, WBSEDCL/DG monitoring and IoT plant analytics.' },
   { icon: <IconBlueprint className="w-6 h-6"/>,   cat:'Engineering',  title:'Project Consultancy',    img:'https://anspl.co.in/assets/SiteErection0-2JH8nkwL.jpg',    desc:'HT/LT design, equipment layout, cable scheduling, supervision of erection & commissioning.' },
   { icon: <IconWrench className="w-6 h-6"/>,      cat:'After-Sales',  title:'AMC & Repair',           img:'https://anspl.co.in/assets/BalluffSiemens0-DhIy0x2s.jpg',  desc:'Annual maintenance contracts, AC/DC drive repair and on-site servicing across East India.' },
-]
-
-const industries = [
-  { n:'01', title:'Rolling Mills',        sub:'Flying shear, SCADA, coil lines', img:'https://anspl.co.in/assets/TMTRollingMills2-CFNQYEss.jpg' },
-  { n:'02', title:'Paper & Pulp',         sub:'DCS, rewinder, PCC/MCC',          img:'https://anspl.co.in/assets/PulpPaper2-BZMfCP6t.jpg' },
-  { n:'03', title:'Building Automation',  sub:'HVAC, BMS, fire panels',          img:'https://anspl.co.in/assets/BuildingAutomation0-CIw5a8aZ.jpg' },
-  { n:'04', title:'Wire Drawing',         sub:'Multi-block drives, PLC',         img:'https://anspl.co.in/assets/WireDrawingPlants0-CPzQ96lK.jpg' },
-  { n:'05', title:'Steel Processing',     sub:'Coil processing, slitters',       img:'https://anspl.co.in/assets/CoilProcessingLines2-BSmvAot-.jpg' },
-  { n:'06', title:'Machinery & CNC',      sub:'Retrofitment, SPM automation',    img:'https://anspl.co.in/assets/FurnacesCCM1-38eKbwjF.jpg' },
 ]
 
 const projects = [
@@ -87,10 +82,38 @@ const testimonials = [
   { icon: <IconFactory className="w-7 h-7"/>,  quote:'The Siemens SIMATIC HMI panel ANSPL engineered for our chassis heft fixture machine has been rock-solid in production. Professional team, clean engineering.', name:'Engineering Head', org:'Tata Motors Limited' },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const page = await getPage('home')
+  const slidesFields = getSection(page, 'slides')
+  const industriesFields = getSection(page, 'industries_list')
+
+  let slides: Slide[] | undefined
+  try {
+    if (slidesFields.slides_json) {
+      const parsed = JSON.parse(slidesFields.slides_json)
+      if (Array.isArray(parsed) && parsed.length > 0) slides = parsed
+    }
+  } catch {}
+
+  const staticIndustries = [
+    { n:'01', title:'Rolling Mills',        sub:'Flying shear, SCADA, coil lines', img:'https://anspl.co.in/assets/TMTRollingMills2-CFNQYEss.jpg' },
+    { n:'02', title:'Paper & Pulp',         sub:'DCS, rewinder, PCC/MCC',          img:'https://anspl.co.in/assets/PulpPaper2-BZMfCP6t.jpg' },
+    { n:'03', title:'Building Automation',  sub:'HVAC, BMS, fire panels',          img:'https://anspl.co.in/assets/BuildingAutomation0-CIw5a8aZ.jpg' },
+    { n:'04', title:'Wire Drawing',         sub:'Multi-block drives, PLC',         img:'https://anspl.co.in/assets/WireDrawingPlants0-CPzQ96lK.jpg' },
+    { n:'05', title:'Steel Processing',     sub:'Coil processing, slitters',       img:'https://anspl.co.in/assets/CoilProcessingLines2-BSmvAot-.jpg' },
+    { n:'06', title:'Machinery & CNC',      sub:'Retrofitment, SPM automation',    img:'https://anspl.co.in/assets/FurnacesCCM1-38eKbwjF.jpg' },
+  ]
+  let industries = staticIndustries
+  try {
+    if (industriesFields.industries_json) {
+      const parsed = JSON.parse(industriesFields.industries_json)
+      if (Array.isArray(parsed) && parsed.length > 0) industries = parsed
+    }
+  } catch {}
+
   return (
     <>
-      <HeroSlider />
+      <HeroSlider slides={slides} />
 
       {/* ── ABOUT ── */}
       <section className="py-24 bg-white">

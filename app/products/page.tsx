@@ -6,9 +6,12 @@ import {
   IconBolt, IconMonitor, IconChip, IconScale,
   IconDrives, IconConstruction, IconBlueprint, IconGear,
 } from '@/components/Icons'
+import { getPage, getSection } from '@/lib/cms'
+
+export const revalidate = false
 export const metadata: Metadata = { title: 'Products' }
 
-const products = [
+const STATIC_PRODUCTS = [
   { badge:'Authorised Distributor', title:'VFD Drives (0.37kW – 1200kW)', img:'https://anspl.co.in/assets/ACDrive0-87i251cT.png', desc:'Complete range of Variable Frequency Drives — selection, supply, panel integration and commissioning.', points:['AC drives (VVVF) and DC drives for all applications','0.37kW to 1200kW — covers every motor load','On-site commissioning, parameter setting and training','After-sales repair, spares and AMC support'] },
   { badge:'System Integrator', title:'PLC & Automation Controllers', img:'https://anspl.co.in/assets/SoftwareSCADA0-j6zzjK_i.jpg', desc:'25+ years PLC integration — hardware selection, programming, commissioning and operator training.', points:['PLC hardware selection and panel design','Custom programming for process & sequence control','Servo controllers for machine tools & SPMs','DCS packages for continuous process industries'] },
   { badge:'Balluff India — East India SI', title:'Balluff Industrial Sensors', img:'https://anspl.co.in/assets/BalluffSiemens0-DhIy0x2s.jpg', desc:'Authorised SI for Balluff India covering East India, Bangladesh & Nepal — full sensor range.', points:['Inductive, capacitive and magnetic proximity sensors','Photoelectric sensors and linear position systems','RFID for industrial track & trace','IO-Link smart sensor technology'] },
@@ -26,7 +29,18 @@ const panels = [
   { Icon: IconScale,        t:'Junction Boxes',          d:'Marshalling panels' },
 ]
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const page = await getPage('products')
+  const productsFields = getSection(page, 'products')
+
+  let products = STATIC_PRODUCTS
+  try {
+    if (productsFields.products_json) {
+      const parsed = JSON.parse(productsFields.products_json)
+      if (Array.isArray(parsed) && parsed.length > 0) products = parsed
+    }
+  } catch {}
+
   return (
     <>
       <PageHero title="Authorised Distributor & SI Partner" subtitle="Supplying and commissioning industry-leading automation products across India, Bangladesh and Nepal." breadcrumb="Products" imgSrc="https://anspl.co.in/assets/LTBusduct0-CFfIjQlh.jpg" />

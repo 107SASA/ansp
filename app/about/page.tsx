@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PageHero, StatsBar, CTABanner, SectionLabel } from '@/components/UI'
+import { getPage, getSection } from '@/lib/cms'
 
+export const revalidate = false
 export const metadata: Metadata = { title: 'About Us' }
 
-const milestones = [
+const STATIC_MILESTONES = [
   { year:'1997–98', title:'Foundation', desc:'Formed for sales & services of Kirloskar Electric machine tool products.', amber: false },
   { year:'2001–02', title:'Bosch Rexroth SI', desc:'System integrator for servo motors & controllers for SPMs.', amber: false },
   { year:'2004–05', title:'ABB System House', desc:'Appointed ABB System House for drives & automation.', amber: false },
@@ -15,7 +17,7 @@ const milestones = [
   { year:'2025–26', title:'IPA India Partner', desc:'SI for load cells, weigh feeders & weighing automation.', amber: true },
 ]
 
-const team = [
+const STATIC_TEAM = [
   { init:'RS', name:'Raj Kumar Srivastava', role:'Software & Engineering Head',   edu:'M.Tech IIT Delhi · B.E. REC Durgapur', exp:'Ex-Tata Motors Jamshedpur (1984–97)' },
   { init:'KK', name:'Kiran Kumar Kasaragod', role:'Marketing, Production & Accounts', edu:'B.E. SJCE Mysore', exp:'Ex-Kirloskar Electric (1991–97)' },
   { init:'TG', name:'Tapan Ghosh',           role:'Software Dev & Project Execution', edu:'Diploma — Electrical & Electronics', exp:'ANSPL since 2010' },
@@ -23,14 +25,43 @@ const team = [
   { init:'AH', name:'Amit Hazra',            role:'Marketing & Product Development',  edu:'Diploma — Electrical & Electronics', exp:'' },
 ]
 
-const certs = [
+const STATIC_CERTS = [
   { icon:'🏆', title:'ISO 9001:2015', desc:'Quality Management System for design, manufacturing & commissioning' },
   { icon:'🔬', title:'Balluff India SI', desc:'Authorised SI for East India, Bangladesh & Nepal (2022)' },
   { icon:'⚖️', title:'IPA India SI', desc:'Load cell, weigh feeder & weighing automation partner (2025)' },
   { icon:'⚙️', title:'ABB System House', desc:'Drives & automation system house since 2004' },
 ]
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const page = await getPage('about')
+  const milestonesFields = getSection(page, 'milestones')
+  const teamFields = getSection(page, 'anspl_team')
+  const certsFields = getSection(page, 'certifications')
+
+  let milestones = STATIC_MILESTONES
+  try {
+    if (milestonesFields.milestones_json) {
+      const parsed = JSON.parse(milestonesFields.milestones_json)
+      if (Array.isArray(parsed) && parsed.length > 0) milestones = parsed
+    }
+  } catch {}
+
+  let team = STATIC_TEAM
+  try {
+    if (teamFields.anspl_team_json) {
+      const parsed = JSON.parse(teamFields.anspl_team_json)
+      if (Array.isArray(parsed) && parsed.length > 0) team = parsed
+    }
+  } catch {}
+
+  let certs = STATIC_CERTS
+  try {
+    if (certsFields.certs_json) {
+      const parsed = JSON.parse(certsFields.certs_json)
+      if (Array.isArray(parsed) && parsed.length > 0) certs = parsed
+    }
+  } catch {}
+
   return (
     <>
       <PageHero
