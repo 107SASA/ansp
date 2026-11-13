@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const BASE = 'https://anspl.co.in/assets'
 
-const CATS = ['All', 'Panel Mfg.', 'Steel & Mills', 'Paper & Pulp', 'Building Auto.', 'Drives & SCADA'] as const
+const CATS = ['All', 'Panel Mfg.', 'Steel & Mills', 'Pulp & Paper', 'Building Auto.', 'Drives & SCADA'] as const
 type Cat = typeof CATS[number]
 
 const ITEMS: { cat: Exclude<Cat,'All'>; title: string; sub: string; img: string; wide?: boolean }[] = [
@@ -42,11 +42,11 @@ const ITEMS: { cat: Exclude<Cat,'All'>; title: string; sub: string; img: string;
   { cat:'Steel & Mills',             title:'CCM Furnace Automation',          sub:'Continuous Casting Machine',        img:`${BASE}/FurnacesCCM1-38eKbwjF.jpg` },
   { cat:'Steel & Mills',             title:'Furnace Process Control',         sub:'Heating & Temperature Control',     img:`${BASE}/Furnace-DzR91K7g.jpg` },
 
-  /* ── Paper & Pulp ── */
-  { cat:'Paper & Pulp', wide:true,  title:'Pulp & Paper Plant Automation',   sub:'130 TPD DCS, Balaji Paper',         img:`${BASE}/PulpPaper0-CFYr6q1z.jpeg` },
-  { cat:'Paper & Pulp',              title:'Paper Machine Sectional Drives',  sub:'Krishna Tissues, West Bengal',      img:`${BASE}/PulpPaper1-C-jgOJoy.webp` },
-  { cat:'Paper & Pulp',              title:'Paper Mill Electrical Works',     sub:'PCC/MCC, PLC Integration',          img:`${BASE}/PulpPaper2-BZMfCP6t.jpg` },
-  { cat:'Paper & Pulp',              title:'Paper Mill Installation',         sub:'Turnkey Electrical, East India',    img:`${BASE}/PaperMill0-aLJga4xU.avif` },
+  /* ── Pulp & Paper ── */
+  { cat:'Pulp & Paper', wide:true,  title:'Pulp & Paper Plant Automation',   sub:'130 TPD DCS, Balaji Paper',         img:`${BASE}/PulpPaper0-CFYr6q1z.jpeg` },
+  { cat:'Pulp & Paper',              title:'Paper Machine Sectional Drives',  sub:'Krishna Tissues, West Bengal',      img:`${BASE}/PulpPaper1-C-jgOJoy.webp` },
+  { cat:'Pulp & Paper',              title:'Paper Mill Electrical Works',     sub:'PCC/MCC, PLC Integration',          img:`${BASE}/PulpPaper2-BZMfCP6t.jpg` },
+  { cat:'Pulp & Paper',              title:'Paper Mill Installation',         sub:'Turnkey Electrical, East India',    img:`${BASE}/PaperMill0-aLJga4xU.avif` },
 
   /* ── Building Automation ── */
   { cat:'Building Auto.', wide:true, title:'Building Management System',     sub:'BMS & HVAC, Commercial Project',    img:`${BASE}/BuildingAutomation0-CIw5a8aZ.jpg` },
@@ -75,7 +75,7 @@ const ITEMS: { cat: Exclude<Cat,'All'>; title: string; sub: string; img: string;
 const CAT_COLORS: Record<Exclude<Cat,'All'>, string> = {
   'Panel Mfg.':    'bg-blue/90',
   'Steel & Mills': 'bg-amber/90',
-  'Paper & Pulp':  'bg-green-700/90',
+  'Pulp & Paper':  'bg-green-700/90',
   'Building Auto.':'bg-purple-700/90',
   'Drives & SCADA':'bg-red-700/90',
 }

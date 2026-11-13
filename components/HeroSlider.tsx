@@ -8,10 +8,10 @@ const SLIDES = [
   {
     img: 'https://anspl.co.in/assets/TMTRollingMills2-CFNQYEss.jpg',
     badge: 'Steel & Rolling Mills',
-    pre: 'One Stop Solution',
-    heading: 'For Electrical &\nAutomation Projects',
-    body: 'Turnkey design, manufacturing and commissioning of electrical & industrial automation systems across India and South Asia.',
-    pill: 'Spirit of Innovation — Since 1997',
+    pre: '',
+    heading: 'Industrial Automation &\nElectrical Solutions',
+    body: 'We design, engineer and deliver electrical and industrial automation solutions for plants across India and South Asia, covering control panels, PLC/SCADA systems, VFD drives and turnkey project execution.',
+    pill: '',
   },
   {
     img: 'https://anspl.co.in/assets/ACDrive2-Otp3Yuwc.jpg',
@@ -34,7 +34,7 @@ const SLIDES = [
     badge: 'Panel Manufacturing',
     pre: '6,000 Sq.ft. Factory',
     heading: '100 Panel Doors\nEvery Month',
-    body: 'In-house panel factory at Ramchandrapur with the only automatic busbar bending machine in East India.',
+    body: 'In-house panel manufacturing facility at Narendrapur, Kolkata, with the only automatic busbar bending machine in East India.',
     pill: 'ISO 9001:2015 Certified · East India',
   },
   {
@@ -93,15 +93,19 @@ export default function HeroSlider({ slides }: { slides?: Slide[] }) {
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
 
         <div className={`transition-all duration-[380ms] ease-in-out ${textOut ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
-          {/* Pill badge */}
-          <div className="inline-flex items-center gap-2 bg-amber/10 border border-amber/30 text-amber font-heading font-bold text-[11px] tracking-[3px] uppercase px-4 py-1.5 rounded-full mb-5">
-            {s.pill}
-          </div>
+          {/* Pill badge (optional) */}
+          {s.pill && (
+            <div className="inline-flex items-center gap-2 bg-amber/10 border border-amber/30 text-amber font-heading font-bold text-[11px] tracking-[3px] uppercase px-4 py-1.5 rounded-full mb-5 mr-2">
+              {s.pill}
+            </div>
+          )}
           {/* Category tag */}
-          <div className="inline-flex items-center gap-2 bg-white/[0.06] border border-white/15 text-white/60 font-heading font-semibold text-[11px] tracking-[2px] uppercase px-3 py-1 rounded ml-2 mb-5">
+          <div className="inline-flex items-center gap-2 bg-white/[0.06] border border-white/15 text-white/60 font-heading font-semibold text-[11px] tracking-[2px] uppercase px-3 py-1 rounded mb-5">
             {s.badge}
           </div>
-          <p className="text-white/40 font-heading font-semibold text-xs tracking-[3px] uppercase mb-2">{s.pre}</p>
+          {s.pre && (
+            <p className="text-white/40 font-heading font-semibold text-xs tracking-[3px] uppercase mb-2">{s.pre}</p>
+          )}
           <h1 className="font-heading font-black text-white text-5xl md:text-[3.4rem] leading-[1.07] mb-6 whitespace-pre-line">
             <em className="not-italic text-amber">{s.heading}</em>
           </h1>
@@ -109,11 +113,11 @@ export default function HeroSlider({ slides }: { slides?: Slide[] }) {
           <div className="flex flex-wrap gap-3 mb-11">
             <Link href="/services"
               className="bg-amber text-navy font-heading font-bold text-sm uppercase tracking-wider px-7 py-3.5 rounded hover:bg-amber-dark transition-colors shadow-lg shadow-amber/25">
-              Explore Services
+              Our Services
             </Link>
             <Link href="/contact"
               className="border-2 border-white/30 text-white font-heading font-bold text-sm uppercase tracking-wider px-7 py-3.5 rounded hover:bg-white hover:text-navy transition-all">
-              Get a Free Quote
+              Get a Quote
             </Link>
           </div>
           {/* Trust strip */}
@@ -121,7 +125,7 @@ export default function HeroSlider({ slides }: { slides?: Slide[] }) {
             {[
               { icon: <IconCheck className="w-4 h-4 text-amber shrink-0" />, n:'ISO 9001:2015', l:'Certified' },
               { icon: <IconFactory className="w-4 h-4 text-amber shrink-0" />, n:'28+', l:'Years Experience' },
-              { icon: <IconBolt className="w-4 h-4 text-amber shrink-0" />, n:'500+', l:'Projects Done' },
+              { icon: <IconBolt className="w-4 h-4 text-amber shrink-0" />, n:'500+', l:'Projects' }, // TODO: retain only if supported by company records
             ].map(({ icon, n, l }) => (
               <div key={n} className="flex items-center gap-2 text-white/50 text-sm">
                 {icon}

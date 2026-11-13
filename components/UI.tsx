@@ -13,8 +13,8 @@ export function SectionLabel({ children, light = false }: { children: React.Reac
 
 /* ── Page hero banner ── */
 export function PageHero({
-  title, subtitle, breadcrumb, imgSrc,
-}: { title: string; subtitle?: string; breadcrumb: string; imgSrc: string }) {
+  title, subtitle, breadcrumb, imgSrc, parent,
+}: { title: string; subtitle?: string; breadcrumb: string; imgSrc: string; parent?: { label: string; href: string } }) {
   return (
     <section className="relative bg-navy overflow-hidden pt-28 pb-20">
       {/* BG image */}
@@ -29,9 +29,15 @@ export function PageHero({
         <p className="text-white/40 text-xs font-heading tracking-[2px] uppercase mb-5">
           <Link href="/" className="text-amber hover:underline">Home</Link>
           {' / '}
+          {parent && (
+            <>
+              <Link href={parent.href} className="text-amber hover:underline">{parent.label}</Link>
+              {' / '}
+            </>
+          )}
           <span className="text-white/60">{breadcrumb}</span>
         </p>
-        <SectionLabel light>{breadcrumb}</SectionLabel>
+        <SectionLabel light>{parent ? parent.label : breadcrumb}</SectionLabel>
         <h1 className="font-heading font-black text-white text-4xl md:text-5xl leading-tight max-w-2xl mt-2 mb-4">
           {title}
         </h1>

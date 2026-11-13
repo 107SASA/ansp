@@ -2,118 +2,50 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PageHero, CTABanner, SectionLabel } from '@/components/UI'
-import {
-  IconBolt, IconDrives, IconMonitor, IconChart, IconBlueprint,
-  IconConstruction, IconWrench, IconCloud,
-} from '@/components/Icons'
-import { getPage, getSection } from '@/lib/cms'
+import { SERVICES } from '@/lib/catalog'
 
-export const revalidate = false
 export const metadata: Metadata = { title: 'Services' }
-
-const STATIC_BLOCKS = [
-  {
-    label:'In-House', title:'Panel Manufacturing',
-    img:'https://anspl.co.in/assets/Panel0-D3e2k-is.jpg',
-    desc:'6,000 sq.ft. Kolkata factory — 100 doors/month. Automatic busbar bending machine (only one in East India).',
-    points:['33kV / 11kV HT VCB Panels','LT Busduct & PCC / PDB Panels','VFD Panels & PLC Panels','DG Synchronization Panels','Control Desks & Junction Boxes'],
-  },
-  {
-    label:'Drives', title:'VFD & Drive Systems',
-    img:'https://anspl.co.in/assets/ACDrive2-Otp3Yuwc.jpg',
-    desc:'Supply & commissioning from 0.37kW to 1200kW — all industrial motor applications.',
-    points:['AC VFD (VVVF) drives up to 1200kW','DC drives for retrofit & new installations','Sectional drive systems for wire drawing & rolling mills','Complete motor packages with panel integration','On-site commissioning & operator training'],
-  },
-  {
-    label:'Automation', title:'PLC, SCADA & DCS',
-    img:'https://anspl.co.in/assets/SoftwareSCADA1-DfJZpc-G.jpg',
-    desc:'IIT Delhi & REC-trained engineers — delivered for L&T, Danieli and Tenova.',
-    points:['PLC-based automation — design to commissioning','DCS for paper & pulp and process industries','SCADA software development & energy dashboards','HMI design and cloud-based data acquisition'],
-  },
-  {
-    label:'Consulting & After-Sales', title:'Energy Audit, Consultancy & AMC',
-    img:'https://anspl.co.in/assets/EMS0-DQTTRtlR.png',
-    desc:'Project engineering consulting, energy reports and annual maintenance contracts.',
-    points:['Energy audit & power utilization reports','HT & LT system design, SLD, cable scheduling','Supervision of erection & commissioning','AMC, AC/DC drive repair & CNC machine servicing'],
-  },
-]
-
-const serviceOverview = [
-  { icon: <IconBolt className="w-5 h-5"/>,         t:'Panel Manufacturing' },
-  { icon: <IconDrives className="w-5 h-5"/>,        t:'VFD Drive Systems' },
-  { icon: <IconMonitor className="w-5 h-5"/>,       t:'PLC / SCADA' },
-  { icon: <IconChart className="w-5 h-5"/>,         t:'Energy Audit' },
-  { icon: <IconBlueprint className="w-5 h-5"/>,     t:'Project Consultancy' },
-  { icon: <IconConstruction className="w-5 h-5"/>,  t:'Erection & Commissioning' },
-  { icon: <IconWrench className="w-5 h-5"/>,        t:'AMC & Repair' },
-  { icon: <IconCloud className="w-5 h-5"/>,         t:'Cloud & Data' },
-]
 
 const process = ['Enquiry & Consultation','Design & Engineering','Manufacturing','Installation','Commissioning']
 
-export default async function ServicesPage() {
-  const page = await getPage('services')
-  const blocksFields = getSection(page, 'blocks')
-
-  let blocks = STATIC_BLOCKS
-  try {
-    if (blocksFields.blocks_json) {
-      const parsed = JSON.parse(blocksFields.blocks_json)
-      if (Array.isArray(parsed) && parsed.length > 0) blocks = parsed
-    }
-  } catch {}
-
+export default function ServicesPage() {
   return (
     <>
       <PageHero
         title="End-to-End Electrical & Automation Services"
-        subtitle="From consulting and design to manufacturing, installation and AMC — complete turnkey delivery."
+        subtitle="From consulting and design to manufacturing, installation and AMC — complete turnkey delivery across India and South Asia."
         breadcrumb="Services"
         imgSrc="https://anspl.co.in/assets/ACDrive1-DFEnjOhF.webp"
       />
 
-      {/* Quick overview */}
-      <section className="py-16 bg-gray-50">
+      {/* Service cards */}
+      <section className="py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {serviceOverview.map(({ icon, t }) => (
-              <div key={t} className="bg-white border border-gray-200 rounded-xl px-4 py-5 flex items-center gap-3 hover:border-blue hover:bg-blue-light transition-all cursor-pointer">
-                <div className="w-9 h-9 bg-blue-light rounded-lg flex items-center justify-center text-blue shrink-0">
-                  {icon}
+          <SectionLabel>What We Do</SectionLabel>
+          <h2 className="font-heading font-black text-navy text-4xl mb-12">Our Services</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {SERVICES.map(s => (
+              <Link key={s.slug} href={`/services/${s.slug}`}
+                className="group bg-white rounded-2xl border border-gray-200 overflow-hidden card-lift flex flex-col">
+                <div className="relative h-48 img-zoom overflow-hidden">
+                  <Image src={s.img} alt={s.title} fill className="object-cover" sizes="(max-width:640px) 100vw, 33vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/65 to-transparent" />
+                  {s.badge && (
+                    <span className="absolute top-3 left-3 bg-amber text-navy font-heading font-bold text-[11px] uppercase tracking-wider px-3 py-1 rounded">
+                      {s.badge}
+                    </span>
+                  )}
                 </div>
-                <p className="font-heading font-bold text-navy text-xs">{t}</p>
-              </div>
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="font-heading font-bold text-navy text-lg mb-2 group-hover:text-blue transition-colors">{s.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-4 flex-1">{s.summary}</p>
+                  <span className="font-heading font-bold text-blue text-xs uppercase tracking-wider group-hover:text-amber transition-colors">
+                    Learn More →
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Service blocks */}
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-6 space-y-8">
-          {blocks.map((b, i) => (
-            <div key={b.title} className={`grid lg:grid-cols-2 rounded-2xl overflow-hidden shadow-md ${i % 2 === 0 ? '' : 'lg:[&>*:first-child]:order-2'}`}>
-              <div className="relative min-h-[320px] img-zoom overflow-hidden">
-                <Image src={b.img} alt={b.title} fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-br from-navy/50 to-blue/30" />
-              </div>
-              <div className="bg-navy px-10 py-12 flex flex-col justify-center">
-                <SectionLabel light>{b.label}</SectionLabel>
-                <h2 className="font-heading font-black text-white text-2xl mb-4">{b.title}</h2>
-                <p className="text-white/60 text-sm leading-relaxed mb-5">{b.desc}</p>
-                <ul className="space-y-2.5 mb-7">
-                  {b.points.map(p => (
-                    <li key={p} className="flex items-start gap-2.5 text-white/65 text-sm">
-                      <span className="text-amber mt-0.5">▸</span>{p}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/contact" className="inline-block bg-amber text-navy font-heading font-bold text-sm uppercase tracking-wider px-6 py-3 rounded hover:bg-amber-dark transition-colors self-start">
-                  Get a Quote
-                </Link>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -126,7 +58,7 @@ export default async function ServicesPage() {
             <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue to-amber" />
             {process.map((step, i) => (
               <div key={step} className="flex-1 text-center relative z-10 px-4 mb-8 md:mb-0">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center font-heading font-black text-xl mx-auto mb-4 border-3 shadow-lg
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center font-heading font-black text-xl mx-auto mb-4 shadow-lg
                   ${i === process.length - 1
                     ? 'bg-white border-amber text-amber shadow-amber/20'
                     : 'bg-white border-blue text-blue shadow-blue/20'}`}

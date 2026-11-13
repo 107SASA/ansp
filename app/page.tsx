@@ -7,9 +7,12 @@ import Reveal from '@/components/Reveal'
 import {
   IconBolt, IconDrives, IconMonitor, IconChart, IconBlueprint, IconWrench,
   IconFactory, IconChip, IconScale, IconGear, IconGraduation, IconTrophy,
-  IconGlobe, IconCheck, IconConstruction, IconMapPin, IconDocument,
+  IconGlobe, IconCheck, IconConstruction, IconDocument,
 } from '@/components/Icons'
 import { getPage, getSection } from '@/lib/cms'
+import { INDUSTRIES } from '@/lib/catalog'
+import { PROJECTS } from '@/lib/projects'
+import ProjectCard from '@/components/ProjectCard'
 
 export const revalidate = false
 
@@ -33,24 +36,20 @@ const clientLogos = [
 ]
 
 const services = [
-  { icon: <IconBolt className="w-6 h-6"/>,       cat:'Manufacturing', title:'Panel Manufacturing',   img:'https://anspl.co.in/assets/Panel0-D3e2k-is.jpg',           desc:'33kV/11kV HT VCB, PCC/PDB, VFD & PLC panels at our 6,000 sq.ft. Kolkata factory. 100 panel doors per month.' },
-  { icon: <IconDrives className="w-6 h-6"/>,      cat:'Drive Systems', title:'VFD & Drive Systems',   img:'https://anspl.co.in/assets/ACDrive1-DFEnjOhF.webp',         desc:'Supply & commissioning of VFD drives from 0.37kW to 1200kW, DC drives and complete sectional motor packages.' },
-  { icon: <IconMonitor className="w-6 h-6"/>,     cat:'Automation',   title:'PLC, SCADA & DCS',      img:'https://anspl.co.in/assets/SoftwareSCADA0-j6zzjK_i.jpg',   desc:'Custom PLC programming, SCADA software and DCS packages delivered for L&T, Danieli and Tenova.' },
-  { icon: <IconChart className="w-6 h-6"/>,       cat:'Energy & IoT', title:'Energy Dashboard & IoT', img:'https://anspl.co.in/assets/EMS0-DQTTRtlR.png',             desc:'Energy dashboards, power utilisation reports, WBSEDCL/DG monitoring and IoT plant analytics.' },
-  { icon: <IconBlueprint className="w-6 h-6"/>,   cat:'Engineering',  title:'Project Consultancy',    img:'https://anspl.co.in/assets/SiteErection0-2JH8nkwL.jpg',    desc:'HT/LT design, equipment layout, cable scheduling, supervision of erection & commissioning.' },
-  { icon: <IconWrench className="w-6 h-6"/>,      cat:'After-Sales',  title:'AMC & Repair',           img:'https://anspl.co.in/assets/BalluffSiemens0-DhIy0x2s.jpg',  desc:'Annual maintenance contracts, AC/DC drive repair and on-site servicing across East India.' },
+  { icon: <IconBolt className="w-6 h-6"/>,       cat:'Manufacturing', slug:'panel-manufacturing', title:'Panel Manufacturing',   img:'https://anspl.co.in/assets/Panel0-D3e2k-is.jpg',           desc:'33kV/11kV HT VCB, PCC/PDB, VFD & PLC panels built at our in-house Narendrapur, Kolkata facility — 6,000 sq.ft., 100 panel doors per month.' },
+  { icon: <IconDrives className="w-6 h-6"/>,      cat:'Drive Systems', slug:'vfd-drive-systems', title:'VFD & Drive Systems',   img:'https://anspl.co.in/assets/ACDrive1-DFEnjOhF.webp',         desc:'Supply & commissioning of VFD drives from 0.37kW to 1200kW, DC drives and complete sectional motor packages.' },
+  { icon: <IconMonitor className="w-6 h-6"/>,     cat:'Automation',   slug:'plc-scada-dcs', title:'PLC, SCADA & DCS',      img:'https://anspl.co.in/assets/SoftwareSCADA0-j6zzjK_i.jpg',   desc:'Custom PLC programming, SCADA software and DCS packages delivered for L&T, Danieli and Tenova.' },
+  { icon: <IconChart className="w-6 h-6"/>,       cat:'Energy & IoT', slug:'energy-management', title:'Energy Dashboard & IoT', img:'https://anspl.co.in/assets/EMS0-DQTTRtlR.png',             desc:'Energy dashboards, power utilisation reports, WBSEDCL/DG monitoring and IoT plant analytics.' },
+  { icon: <IconBlueprint className="w-6 h-6"/>,   cat:'Engineering',  slug:'project-consultancy', title:'Project Consultancy',    img:'https://anspl.co.in/assets/SiteErection0-2JH8nkwL.jpg',    desc:'HT/LT design, equipment layout, cable scheduling, supervision of erection & commissioning.' },
+  { icon: <IconWrench className="w-6 h-6"/>,      cat:'After-Sales',  slug:'amc', title:'AMC & Repair',           img:'https://anspl.co.in/assets/BalluffSiemens0-DhIy0x2s.jpg',  desc:'Annual maintenance contracts and AC/DC drive repair. We provide on-site installation, commissioning and after-sales support at customer plants across India and South Asia.' },
 ]
 
-const projects = [
-  { tag:'Electrification', title:'Sand Plant — L&T',              meta:'East India · Turnkey EPC',   img:'https://anspl.co.in/assets/SiteErection2-CZuJ0WN6.jpg' },
-  { tag:'Wire Drawing',    title:'8-Block Automation — Miki Wire', meta:'West Bengal',               img:'https://anspl.co.in/assets/WireDrawingPlants1-Cx0gL6WJ.jpg' },
-  { tag:'Rolling Mill',    title:'Danieli Rolling Mill SCADA',     meta:'East India · PLC + SCADA',  img:'https://anspl.co.in/assets/TMTRollingMills3-D5h3I46v.jpg' },
-]
+const projects = PROJECTS.slice(0, 3)
 
 const galleryPreview = [
   { title:'PCC Panel — Bengal Tools',         cat:'Panel Mfg.',    img:'https://anspl.co.in/assets/BoltedPanels0-DoAsP7Dl.jpg' },
   { title:'SCADA — Danieli Rolling Mill',     cat:'Steel & Mills', img:'https://anspl.co.in/assets/TMTRollingMills1-Bchznq5t.webp' },
-  { title:'130 TPD Paper Plant — Balaji',     cat:'Paper & Pulp',  img:'https://anspl.co.in/assets/PulpPaper0-CFYr6q1z.jpeg' },
+  { title:'130 TPD Paper Plant — Balaji',     cat:'Pulp & Paper',  img:'https://anspl.co.in/assets/PulpPaper0-CFYr6q1z.jpeg' },
   { title:'Energy Dashboard — WBSEDCL',       cat:'PLC & SCADA',   img:'https://anspl.co.in/assets/SoftwareSCADA1-DfJZpc-G.jpg' },
   { title:'BMS & HVAC — Commercial Project',  cat:'Building Auto.',img:'https://anspl.co.in/assets/BuildingAutomation2-B5qBP5yI.jpg' },
   { title:'Coil Processing — Steel Plant',    cat:'Steel & Mills', img:'https://anspl.co.in/assets/CoilProcessingLines1-H8Xt7Tav.webp' },
@@ -72,7 +71,7 @@ const whyUs = [
   { icon: <IconGraduation className="w-8 h-8"/>,  title:'IIT Delhi & REC-Trained Leadership',   desc:'Directors trained at IIT Delhi and REC Durgapur with 13+ years at Tata Motors and Kirloskar Electric before founding ANSPL.' },
   { icon: <IconChip className="w-8 h-8"/>,        title:'Authorised SI — Balluff & IPA India',  desc:'Exclusive System Integrator for Balluff India (East India, Bangladesh, Nepal) and IPA India for weighing automation.' },
   { icon: <IconBlueprint className="w-8 h-8"/>,   title:'Complete Turnkey Capability',          desc:'From HT substation design and SLD to panel manufacturing, installation, commissioning and annual maintenance — under one roof.' },
-  { icon: <IconGlobe className="w-8 h-8"/>,       title:'Pan-India + Bangladesh Coverage',      desc:'Active project delivery across India with local offices in Kolkata, Patna and a Bangladesh presence in Dhaka (Tongi).' },
+  { icon: <IconGlobe className="w-8 h-8"/>,       title:'India & South Asia Project Execution', desc:'Headquartered in Kolkata, our engineering teams execute turnkey projects and provide on-site plant support across India and South Asia.' },
   { icon: <IconTrophy className="w-8 h-8"/>,      title:'Fastest Growing ABB System Integrator',desc:'Awarded Fastest Growing ABB System Integrator (2006), Highest ABB Sales East Zone (2009) and Fastest Growing Channel Partner (2009–10).' },
 ]
 
@@ -85,7 +84,6 @@ const testimonials = [
 export default async function HomePage() {
   const page = await getPage('home')
   const slidesFields = getSection(page, 'slides')
-  const industriesFields = getSection(page, 'industries_list')
 
   let slides: Slide[] | undefined
   try {
@@ -95,21 +93,7 @@ export default async function HomePage() {
     }
   } catch {}
 
-  const staticIndustries = [
-    { n:'01', title:'Rolling Mills',        sub:'Flying shear, SCADA, coil lines', img:'https://anspl.co.in/assets/TMTRollingMills2-CFNQYEss.jpg' },
-    { n:'02', title:'Paper & Pulp',         sub:'DCS, rewinder, PCC/MCC',          img:'https://anspl.co.in/assets/PulpPaper2-BZMfCP6t.jpg' },
-    { n:'03', title:'Building Automation',  sub:'HVAC, BMS, fire panels',          img:'https://anspl.co.in/assets/BuildingAutomation0-CIw5a8aZ.jpg' },
-    { n:'04', title:'Wire Drawing',         sub:'Multi-block drives, PLC',         img:'https://anspl.co.in/assets/WireDrawingPlants0-CPzQ96lK.jpg' },
-    { n:'05', title:'Steel Processing',     sub:'Coil processing, slitters',       img:'https://anspl.co.in/assets/CoilProcessingLines2-BSmvAot-.jpg' },
-    { n:'06', title:'Machinery & CNC',      sub:'Retrofitment, SPM automation',    img:'https://anspl.co.in/assets/FurnacesCCM1-38eKbwjF.jpg' },
-  ]
-  let industries = staticIndustries
-  try {
-    if (industriesFields.industries_json) {
-      const parsed = JSON.parse(industriesFields.industries_json)
-      if (Array.isArray(parsed) && parsed.length > 0) industries = parsed
-    }
-  } catch {}
+  const industries = INDUSTRIES
 
   return (
     <>
@@ -138,13 +122,13 @@ export default async function HomePage() {
           <Reveal from="right">
             <SectionLabel>Who We Are</SectionLabel>
             <h2 className="font-heading font-black text-navy text-4xl leading-tight mb-5">
-              Engineering East India's<br />Industrial Future
+              Engineering India's<br />Industrial Future
             </h2>
             <p className="text-gray-500 leading-relaxed mb-4">
               ANSPL is a Kolkata-based turnkey electrical and industrial automation company. For 28+ years we've delivered complete solutions — from panel manufacturing and HT substation design to SCADA commissioning and cloud data acquisition.
             </p>
             <p className="text-gray-500 leading-relaxed mb-6">
-              Authorised System Integrator for <strong className="text-navy">Balluff India</strong> (East India, Bangladesh & Nepal) and <strong className="text-navy">IPA India</strong> (weighing automation). Our 6,000 sq.ft. factory produces up to 100 panel doors per month.
+              Our in-house facility at Narendrapur, Kolkata supports panel manufacturing, while our engineering team undertakes project execution and site services across India and South Asia.
             </p>
             <ul className="space-y-3 mb-7">
               {[
@@ -202,7 +186,7 @@ export default async function HomePage() {
                     </div>
                     <h3 className="font-heading font-bold text-navy text-lg mb-2">{s.title}</h3>
                     <p className="text-gray-500 text-sm leading-relaxed mb-4">{s.desc}</p>
-                    <Link href="/services" className="font-heading font-bold text-blue text-xs uppercase tracking-wider hover:text-amber transition-colors">
+                    <Link href={`/services/${s.slug}`} className="font-heading font-bold text-blue text-xs uppercase tracking-wider hover:text-amber transition-colors">
                       Learn More →
                     </Link>
                   </div>
@@ -230,13 +214,13 @@ export default async function HomePage() {
           </Reveal>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { icon:<IconBolt className="w-5 h-5"/>,    title:'VFD Drives',         sub:'0.37kW to 1200kW — all motor applications',               badge:'Supply & Commission' },
-              { icon:<IconMonitor className="w-5 h-5"/>, title:'PLC & Controllers',  sub:'Automation packages, servo & motion control',             badge:'System Integrator' },
-              { icon:<IconChip className="w-5 h-5"/>,    title:'Balluff Sensors',    sub:'Industrial sensors — East India, Bangladesh & Nepal',     badge:'Authorised SI' },
-              { icon:<IconScale className="w-5 h-5"/>,   title:'IPA Weigh Feeders',  sub:'Load cells, weigh feeders & weighing automation',         badge:'Authorised SI' },
+              { slug:'ac-vfd-drives',   icon:<IconBolt className="w-5 h-5"/>,    title:'AC / VFD Drives',              sub:'0.37kW to 1200kW — all motor applications',               badge:'Supply & Commission' },
+              { slug:'plc-controllers', icon:<IconMonitor className="w-5 h-5"/>, title:'PLC & Automation Controllers', sub:'Automation packages, servo & motion control',             badge:'System Integrator' },
+              { slug:'balluff-sensors', icon:<IconChip className="w-5 h-5"/>,    title:'Balluff Sensors',              sub:'Industrial sensors — East India, Bangladesh & Nepal',     badge:'Authorised SI' },
+              { slug:'ipa-weighing',    icon:<IconScale className="w-5 h-5"/>,   title:'IPA Weighing Solutions',       sub:'Load cells, weigh feeders & weighing automation',         badge:'Authorised SI' },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 80}>
-                <div className="bg-white/[0.05] border border-white/10 rounded-xl p-6 flex gap-5 items-start hover:bg-blue/20 hover:border-blue/40 transition-all cursor-pointer">
+                <Link href={`/products/${p.slug}`} className="bg-white/[0.05] border border-white/10 rounded-xl p-6 flex gap-5 items-start hover:bg-blue/20 hover:border-blue/40 transition-all">
                   <div className="w-12 h-12 bg-blue/25 border border-blue/30 rounded-xl flex items-center justify-center text-white/70 shrink-0">
                     {p.icon}
                   </div>
@@ -247,7 +231,7 @@ export default async function HomePage() {
                       {p.badge}
                     </span>
                   </div>
-                </div>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -269,18 +253,18 @@ export default async function HomePage() {
               </Link>
             </div>
           </Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {industries.map((ind, i) => (
-              <Reveal key={ind.title} delay={i * 60}>
-                <div className="relative rounded-2xl overflow-hidden h-48 img-zoom cursor-pointer group">
+              <Reveal key={ind.slug} delay={i * 60}>
+                <Link href={`/industries/${ind.slug}`} className="block relative rounded-2xl overflow-hidden h-48 img-zoom group">
                   <Image src={ind.img} alt={ind.title} fill className="object-cover" />
                   <div className="overlay-hover absolute inset-0 bg-gradient-to-t from-navy/92 to-navy/20 group-hover:from-blue/92 group-hover:to-blue/20" />
-                  <span className="absolute top-2 right-2 w-6 h-6 bg-amber text-navy font-heading font-black text-[10px] rounded flex items-center justify-center">{ind.n}</span>
+                  <span className="absolute top-2 right-2 w-6 h-6 bg-amber text-navy font-heading font-black text-[10px] rounded flex items-center justify-center">{String(i + 1).padStart(2, '0')}</span>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <h3 className="font-heading font-bold text-white text-xs mb-0.5 leading-tight">{ind.title}</h3>
-                    <p className="text-white/55 text-[10px] leading-snug">{ind.sub}</p>
+                    <p className="text-white/55 text-[10px] leading-snug">{ind.short}</p>
                   </div>
-                </div>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -295,7 +279,7 @@ export default async function HomePage() {
               <SectionLabel>Why ANSPL</SectionLabel>
               <h2 className="font-heading font-black text-navy text-4xl mt-1">The ANSPL Difference</h2>
               <p className="text-gray-500 text-sm mt-3 max-w-2xl mx-auto">
-                28 years. 500+ projects. Three countries. Here's why India's leading manufacturers trust us.
+                Engineering capability, in-house panel manufacturing and project execution across India and South Asia.
               </p>
             </div>
           </Reveal>
@@ -409,17 +393,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-3 gap-5">
             {projects.map((p, i) => (
               <Reveal key={p.title} delay={i * 90}>
-                <div className="relative rounded-2xl overflow-hidden h-60 img-zoom cursor-pointer group card-lift">
-                  <Image src={p.img} alt={p.title} fill className="object-cover" />
-                  <div className="overlay-hover absolute inset-0 bg-gradient-to-t from-navy/92 to-navy/10 group-hover:from-blue/92 group-hover:to-blue/15" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <span className="inline-block bg-amber text-navy font-heading font-bold text-[11px] uppercase tracking-wider px-2.5 py-1 rounded mb-2">{p.tag}</span>
-                    <h3 className="font-heading font-bold text-white text-base mb-1">{p.title}</h3>
-                    <p className="text-white/55 text-xs flex items-center gap-1.5">
-                      <IconMapPin className="w-3 h-3 text-amber shrink-0" />{p.meta}
-                    </p>
-                  </div>
-                </div>
+                <ProjectCard p={p} dark />
               </Reveal>
             ))}
           </div>

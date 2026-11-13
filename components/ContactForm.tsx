@@ -1,20 +1,31 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { IconBolt } from '@/components/Icons'
+import { INDUSTRIES } from '@/lib/catalog'
 
 const requirements = [
   'VFD / Drive Systems','Panel Manufacturing (PCC / MCC / VFD)','PLC / SCADA / DCS',
   'Balluff Sensors Enquiry','IPA Weigh Feeders','Energy Audit / Power Report',
   'Project Consultancy','AMC / Repair Services','General Enquiry',
 ]
-const industries = [
-  'Rolling Mills / Steel','Paper & Pulp','Wire Drawing','Building & Infrastructure',
-  'Machinery / CNC','Coil Processing','Food & Cold Storage','Power & Utilities','Other',
-]
+const industries = [...INDUSTRIES.map(i => i.title), 'Other']
 
 export default function ContactForm() {
   const [sent, setSent] = useState(false)
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', req: '', ind: '', msg: '' })
+  const params = useSearchParams()
+  const enquiry = params.get('enquiry')
+
+  // Pre-fill when arriving from a service / product / industry page ("Enquire Now")
+  useEffect(() => {
+    if (!enquiry) return
+    setForm(f => ({
+      ...f,
+      ind: industries.includes(enquiry) ? enquiry : f.ind,
+      msg: f.msg || `Enquiry: ${enquiry}\n\n`,
+    }))
+  }, [enquiry])
 
   function submit() {
     if (!form.name || !form.email || !form.msg) {

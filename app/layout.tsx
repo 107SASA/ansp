@@ -3,6 +3,7 @@ import { Montserrat, Open_Sans } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { SITE } from '@/lib/site'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -19,11 +20,11 @@ const openSans = Open_Sans({
 export const metadata: Metadata = {
   title: {
     template: '%s | ANSPL – Electrical & Automation',
-    default: 'ANSPL – One Stop Solution for Electrical & Automation Projects',
+    default: 'ANSPL – Industrial Automation & Electrical Solutions',
   },
   description:
-    'Automation Network & Services Pvt. Ltd. — Turnkey electrical & industrial automation solutions: VFD drives, PLC/SCADA, panel manufacturing, energy audit and AMC services across India.',
-  keywords: ['VFD drives', 'PLC automation', 'SCADA', 'panel manufacturing', 'electrical automation', 'Kolkata', 'East India'],
+    'Automation Network & Services Pvt. Ltd. — Turnkey electrical & industrial automation solutions: VFD drives, PLC/SCADA, panel manufacturing, energy audit and AMC services across India and South Asia.',
+  keywords: ['VFD drives', 'PLC automation', 'SCADA', 'panel manufacturing', 'electrical automation', 'Kolkata', 'India', 'South Asia'],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* WhatsApp floating button */}
         <a
-          href="https://wa.me/919830505000"
+          href={`https://wa.me/${SITE.whatsapp}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"

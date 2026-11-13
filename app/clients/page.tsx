@@ -65,7 +65,7 @@ const clients = [
 
 const sectorBreakdown = [
   { Icon: IconConstruction, sector:'Steel & Metals',     clients:'Tata Steel, Jindal, SRMB, Adi Ispat, Vikrant' },
-  { Icon: IconDocument,     sector:'Paper & Pulp',       clients:'Balaji Paper, Krishna Tissues' },
+  { Icon: IconDocument,     sector:'Pulp & Paper',       clients:'Balaji Paper, Krishna Tissues' },
   { Icon: IconCar,          sector:'Automotive',         clients:'Tata Motors' },
   { Icon: IconFire,         sector:'Industrial Furnaces',clients:'Tenova (LOI Wesman)' },
   { Icon: IconGear,         sector:'Engineering & EPC',  clients:'L&T, Siemens, Danieli, Bosch Rexroth' },
@@ -163,7 +163,7 @@ export default function ClientsPage() {
             {[
               { Icon: IconHandshake, title:'Long-Term Relationships', desc:'Clients like Tata Steel, Danieli and L&T have returned to ANSPL across multiple projects over decades.' },
               { Icon: IconFactory,   title:'In-House Manufacturing',  desc:'Our own 6,000 sq.ft. panel factory ensures quality, speed and accountability — no third-party delays.' },
-              { Icon: IconGlobe,     title:'Pan-India + Bangladesh',  desc:'Project capability across India with offices in Kolkata, Patna and a local presence in Dhaka, Bangladesh.' },
+              { Icon: IconGlobe,     title:'India & South Asia Project Execution', desc:'Headquartered in Kolkata, our engineering teams execute turnkey projects and provide on-site plant support across India and South Asia.' },
             ].map(f => (
               <div key={f.title} className="border border-gray-200 rounded-2xl p-7 text-center hover:border-blue hover:bg-blue-light transition-all card-lift">
                 <div className="w-12 h-12 bg-blue-light rounded-xl flex items-center justify-center text-blue mx-auto mb-4 group-hover:bg-blue/10">

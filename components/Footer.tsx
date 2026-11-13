@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { IconPhone, IconFactory, IconBuilding, IconMapPin, IconGlobe } from '@/components/Icons'
+import { IconPhone, IconFactory, IconBuilding } from '@/components/Icons'
+import { SERVICES } from '@/lib/catalog'
+import { SITE, tel } from '@/lib/site'
 
-const services  = ['Panel Manufacturing','VFD Drive Systems','PLC / SCADA','Energy Audit','AMC Services']
+const FOOTER_SERVICES = ['panel-manufacturing','vfd-drive-systems','plc-scada-dcs','energy-management','erection-commissioning','amc']
+const services  = SERVICES.filter(s => FOOTER_SERVICES.includes(s.slug))
 const company   = [['About Us','/about'],['Our Projects','/projects'],['Gallery','/gallery'],['Clients','/clients'],['Blog','/blog'],['Contact','/contact']]
 const partners  = ['Balluff India SI','IPA India SI','ABB System House','Siemens Partner','Rittal Collaborator']
 
@@ -25,12 +28,12 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-white/40 text-sm leading-relaxed mb-5">
-              One stop solution for electrical &amp; automation projects. Turnkey design, manufacturing &amp; commissioning across India &amp; South Asia since 1997.
+              Industrial automation &amp; electrical solutions. Headquartered in Kolkata, delivering projects across India &amp; South Asia since 1997.
             </p>
             {/* Phone numbers */}
             <div className="space-y-1.5 mb-6">
-              {['+91 98305 05000', '+91 93395 05012', '+91 95648 24342'].map(p => (
-                <a key={p} href={`tel:${p.replace(/\s/g,'')}`}
+              {SITE.phones.map(p => (
+                <a key={p} href={tel(p)}
                   className="flex items-center gap-2 text-white/50 text-sm hover:text-amber transition-colors">
                   <IconPhone className="w-3.5 h-3.5 text-amber shrink-0" />{p}
                 </a>
@@ -59,7 +62,7 @@ export default function Footer() {
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
               </a>
-              <a href="https://wa.me/919830505000" target="_blank" rel="noopener noreferrer"
+              <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer"
                 aria-label="WhatsApp" title="WhatsApp"
                 className="w-9 h-9 rounded-lg bg-white/8 hover:bg-[#25D366] flex items-center justify-center transition-colors group">
                 <svg viewBox="0 0 32 32" className="w-4 h-4 fill-white/50 group-hover:fill-white transition-colors" xmlns="http://www.w3.org/2000/svg">
@@ -86,8 +89,8 @@ export default function Footer() {
             <h5 className="font-heading font-bold text-amber text-[11px] tracking-[3px] uppercase mb-5">Services</h5>
             <ul className="space-y-2.5">
               {services.map(s => (
-                <li key={s}>
-                  <Link href="/services" className="text-white/45 text-sm hover:text-white transition-colors">{s}</Link>
+                <li key={s.slug}>
+                  <Link href={`/services/${s.slug}`} className="text-white/45 text-sm hover:text-white transition-colors">{s.title}</Link>
                 </li>
               ))}
             </ul>
@@ -105,12 +108,7 @@ export default function Footer() {
           <div>
             <h5 className="font-heading font-bold text-amber text-[11px] tracking-[3px] uppercase mb-5">Offices</h5>
             <ul className="space-y-4">
-              {[
-                { Icon: IconFactory,  label:'H.O. & Works',     addr:'Ramchandrapur, Narendrapur\nKolkata – 700 103' },
-                { Icon: IconBuilding, label:'Marketing Office',  addr:'3rd Floor, 44A, Shyama Pally\nJadavpur, Kolkata – 700 032' },
-                { Icon: IconMapPin,   label:'Patna',             addr:'Kankarbagh, Patna – 800 020' },
-                { Icon: IconGlobe,    label:'Dhaka',             addr:'College Gate, Tongi, Dhaka' },
-              ].map(o => (
+              {SITE.offices.map((office, i) => ({ label: office.label, addr: office.short, Icon: i === 0 ? IconFactory : IconBuilding })).map(o => (
                 <li key={o.label} className="flex gap-2.5 text-sm text-white/45">
                   <o.Icon className="w-3.5 h-3.5 text-amber shrink-0 mt-0.5" />
                   <div>
@@ -125,13 +123,13 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-white/25 text-xs">
-          <p>© 2025 Automation Network &amp; Services Pvt. Ltd. All rights reserved.</p>
+          <p>© 2026 {SITE.name} All rights reserved.</p>
           <div className="flex items-center gap-3">
             <span>ISO 9001:2015 Certified</span>
             <span>·</span>
-            <a href="mailto:kiran@automationnetwork.net" className="hover:text-amber transition-colors">kiran@automationnetwork.net</a>
+            <a href={`mailto:${SITE.email.primary}`} className="hover:text-amber transition-colors">{SITE.email.primary}</a>
             <span>·</span>
-            <span>anspl.co.in</span>
+            <span>{SITE.domain}</span>
           </div>
         </div>
       </div>

@@ -1,44 +1,27 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SectionLabel } from '@/components/UI'
-import { IconFactory, IconBuilding, IconMapPin, IconGlobe, IconPhone, IconMail, IconClock } from '@/components/Icons'
+import { IconPhone, IconMail, IconClock } from '@/components/Icons'
 import { getPage, getSection } from '@/lib/cms'
+import { Suspense } from 'react'
 import ContactForm from '@/components/ContactForm'
+import { SITE } from '@/lib/site'
 
 export const revalidate = false
 export const metadata: Metadata = { title: 'Contact' }
 
-const STATIC_OFFICES = [
-  {
-    title: 'Head Office & Works',
-    lines: ['Ramchandrapur, Narendrapur', 'P.S. Sonarpur, Kolkata – 700 103', 'West Bengal, India'],
-    map: 'https://maps.google.com/?q=Ramchandrapur+Narendrapur+Kolkata',
-  },
-  {
-    title: 'Marketing Office',
-    lines: ['3rd Floor, 44A, Shyama Pally', 'Jadavpur, Kolkata – 700 032', 'West Bengal, India'],
-    map: 'https://maps.google.com/?q=44A+Shyama+Pally+Jadavpur+Kolkata',
-  },
-  {
-    title: 'Patna Office',
-    lines: ['Omsai Villa, #302, 3rd Floor', 'Kankarbagh, Patna – 800 020', 'Bihar, India'],
-    map: null,
-  },
-  {
-    title: 'Dhaka Office',
-    lines: ['Mr. Alok Kumar — +880 1933 168401', 'College Gate, Tongi, Dhaka', 'Bangladesh'],
-    map: null,
-  },
-]
+type Office = { title: string; lines: string[]; map: string | null }
+
+const STATIC_OFFICES: Office[] = SITE.offices.map(o => ({ title: o.label, lines: [...o.lines], map: o.map }))
 
 export default async function ContactPage() {
   const page = await getPage('contact')
   const officesFields = getSection(page, 'offices')
 
-  const phone1 = officesFields.phone_1 || '+91 98305 05000'
-  const phone2 = officesFields.phone_2 || '+91 93395 05012'
-  const emailPrimary = officesFields.email_primary || 'kiran@automationnetwork.net'
-  const emailSupport = officesFields.email_support || 'msupport@automationnetwork.net'
+  const phone1 = officesFields.phone_1 || SITE.phones[0]
+  const phone2 = officesFields.phone_2 || SITE.phones[1]
+  const emailPrimary = officesFields.email_primary || SITE.email.primary
+  const emailSupport = officesFields.email_support || SITE.email.support
 
   let offices = STATIC_OFFICES
   try {
@@ -90,7 +73,9 @@ export default async function ContactPage() {
       {/* Form + Offices */}
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-[1.2fr_1fr] gap-14 items-start">
-          <ContactForm />
+          <Suspense fallback={null}>
+            <ContactForm />
+          </Suspense>
 
           {/* Offices */}
           <div className="space-y-4">
